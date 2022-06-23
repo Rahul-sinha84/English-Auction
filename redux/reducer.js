@@ -1,19 +1,24 @@
 import { combineReducers } from "redux";
 import {
-  CONTRACT_INSTANCE,
+  AUCTION_INSTANCE,
   CURRENT_ACCOUNT,
   LOAD,
   METAMASK_CONNECT_FUNCTION,
   METAMASK_STATUS,
   NETWORK_ID,
+  TOKEN_INSTANCE,
 } from "./types";
 
 const metamaskStatus = (state = false, action) => {
   if (action.type === METAMASK_STATUS) return action.payload;
   return state;
 };
-const contractInstance = (state = {}, action) => {
-  if (action.type === CONTRACT_INSTANCE) return action.payload;
+const auctionInstance = (state = {}, action) => {
+  if (action.type === AUCTION_INSTANCE) return action.payload;
+  return state;
+};
+const tokenInstance = (state = {}, action) => {
+  if (action.type === TOKEN_INSTANCE) return action.payload;
   return state;
 };
 const currentAccount = (state = "", action) => {
@@ -35,7 +40,8 @@ const load = (state = false, action) => {
 
 export default combineReducers({
   metamaskConnectFunction,
-  contractInstance,
+  auctionInstance,
+  tokenInstance,
   currentAccount,
   metamaskStatus,
   networkId,

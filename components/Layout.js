@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import {
-  contractAddress,
   checkMetamaskStatus,
   connectMetamask,
   firstFunc,
@@ -9,17 +8,20 @@ import {
 
 import { connect } from "react-redux";
 import {
-  changeContractInstance,
+  changeAuctionInstance,
+  changeTokenInstance,
   changeLoad,
   changeCurrentAccount,
   changeMetamaskConnectFunction,
   changeMetamaskStatus,
   changeNetworkId,
 } from "../redux/action";
+import NftDisplay from "./NftDisplay";
 
 const Layout = ({
   children,
-  changeContractInstance,
+  changeAuctionInstance,
+  changeTokenInstance,
   changeMetamaskConnectFunction,
   changeCurrentAccount,
   changeLoad,
@@ -28,7 +30,6 @@ const Layout = ({
   state,
 }) => {
   const {
-    contractInstance,
     currentAccount,
     load,
     networkId,
@@ -39,7 +40,8 @@ const Layout = ({
   //default
   useEffect(() => {
     firstFunc(
-      changeContractInstance,
+      changeAuctionInstance,
+      changeTokenInstance,
       changeCurrentAccount,
       changeNetworkId,
       changeMetamaskStatus
@@ -58,30 +60,15 @@ const Layout = ({
     //    getContractData();
     // for listening of events
     //    listenToEvents(contract);
-  }, [currentAccount, contractInstance, load]);
+  }, [currentAccount, load]);
 
-  return (
-    <>
-      <h1>Hello, Blockchain !!</h1>
-      {!metamaskStatus ? (
-        <button onClick={() => metamaskConnectFunction(changeMetamaskStatus)}>
-          Connect Metamask
-        </button>
-      ) : (
-        <>
-          {children}
-          <h3>Contract address: {contractAddress}</h3>
-          <h4>Current account: {currentAccount}</h4>
-          <h4>Current chain-id: {networkId}</h4>
-        </>
-      )}
-    </>
-  );
+  return <>{children}</>;
 };
 
 const mapStateToState = (state) => ({ state });
 export default connect(mapStateToState, {
-  changeContractInstance,
+  changeAuctionInstance,
+  changeTokenInstance,
   changeMetamaskConnectFunction,
   changeCurrentAccount,
   changeLoad,

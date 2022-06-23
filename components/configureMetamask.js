@@ -1,13 +1,16 @@
 import { ethers } from "ethers";
 // enter the contract address in the .env.local as 'NEXT_PUBLIC_CONTRACT_ADDRESS'
 // in the root directory
-export const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+export const auctionAddress = process.env.NEXT_PUBLIC_AUCTION_ADDRESS;
+export const tokenAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
 //import artifacts of the contract as 'Artifacts' here !!
-const Artifacts = "";
+import auctionArtifact from "../artifacts/contracts/auction.sol/Auction.json";
+import tokenArtifact from "../artifacts/contracts/erc721.sol/MyNFT.json";
 // import Artifacts from "../artifacts/contracts/Greeter.sol/Greeter.json";
 
 export const firstFunc = async (
-  setContract,
+  setAuctionContract,
+  setTokenContract,
   setCurrentAccount,
   setCurrentNetworkId,
   setMetamaskConnected
@@ -23,18 +26,28 @@ export const firstFunc = async (
   } else {
     setMetamaskConnected(false);
   }
-  const contract = await initialiseContract(_signer);
-  setContract(contract);
+  await initialiseContract(_signer, setAuctionContract, setTokenContract);
 };
 
-export const initialiseContract = async (_signer) => {
-  if (!contractAddress) return;
-  const _contract = new ethers.Contract(
-    contractAddress,
-    Artifacts.abi,
+export const initialiseContract = async (
+  _signer,
+  setAuctionContract,
+  setTokenContract
+) => {
+  if (!auctionAddress || !tokenAddress) return;
+  const _auctionContract = new ethers.Contract(
+    auctionAddress,
+    auctionArtifact.abi,
     _signer
   );
-  return _contract;
+  setAuctionContract(_auctionContract);
+
+  const _tokenContract = new ethers.Contract(
+    tokenAddress,
+    tokenArtifact.abi,
+    _signer
+  );
+  setTokenContract(_tokenContract);
 };
 
 export const connectMetamask = async (setMetamaskConnected) => {
